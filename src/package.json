@@ -9,8 +9,9 @@
 		"body-parser": "^1.15.2",
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
+		"common-errors": "latest",
 		"cors": "^2.8.1",
-		"dotenv": "^8.2.0",
+		"dotenv": "latest",
 		"express": "^4.14.0",
 		"helmet": "^3.1.0",
 		"mocha": "^3.2.0",
@@ -24,5 +25,9 @@
 		"node",
 		"express"
 	],
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"@types/helmet": "latest",
+		"@types/common-errors": "latest"
+	}
 }
