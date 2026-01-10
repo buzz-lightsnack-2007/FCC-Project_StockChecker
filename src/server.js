@@ -38,14 +38,14 @@ app.use(function(req, res, next) {
 
 //Start our server and tests!
 const listener = app.listen(process.env.PORT || 3000, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
-  if(process.env.NODE_ENV==='test') {
-    console.log('Running Tests...');
+  console.log('\x1b[32mThe app is listening on port \x1b[1m' + listener.address().port + '\x1b[0m.');
+  if(process.env.NODE_ENV == 'test') {
+    console.log('Running Tests…');
     setTimeout(function () {
       try {
         runner.run();
       } catch(e) {
-        console.log('Tests are not valid:');
+        console.error('\x1b[1m\x1b[31mTests are not valid:\x1b[0m');
         console.error(e);
       }
     }, 3500);
