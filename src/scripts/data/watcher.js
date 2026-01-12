@@ -2,11 +2,9 @@
  * @module watcher
  *
  * @constant {import("zod").ZodAny} z - Zod namespace used to build validation schemas.
- * @constant {typeof DataContainer} DataContainer - Base class providing generic data container behavior.
  * @constant {typeof StockQuote} StockQuote - Class representing a stock quote entity.
  */
 const z = require(`zod`).z
-const DataContainer = require(`../templates/data.js`)
 const StockQuote = require(`./stock.js`).StockQuote
 
 /**
@@ -16,7 +14,7 @@ const StockQuote = require(`./stock.js`).StockQuote
  * @extends DataContainer
  * @classdesc Holds the watched stock and its associated address and enforces shape via a zod schema.
  */
-class Watcher extends DataContainer {
+class Watcher {
 	/**
 	 * The stock being watched.
 	 * @name Watcher#stock
@@ -42,7 +40,7 @@ class Watcher extends DataContainer {
 	 */
 	_schema = z.object({
 		"stock": z.array(z.instanceof(StockQuote)),
-		"address": z.hostname()
+		"address": z.coerce.string()
 	})
 
 	/**
@@ -55,8 +53,7 @@ class Watcher extends DataContainer {
 	 * @returns {Watcher} A newly constructed Watcher instance.
 	 */
 	constructor (properties) {
-		super(properties)
-		(strict || this._schema.safeParse().success) ? Object.assign(this, this._validate(properties)) : false;
+		(this._schema.safeParse(properties).success) ? Object.assign(this, this._schema.parse(properties)) : false;
 	}
 }
 

@@ -1,6 +1,5 @@
 // Module imports
 const z = require(`zod`).z
-const DataContainer = require(`../templates/data.js`)
 
 /**
  * Stock symbol validation
@@ -12,7 +11,7 @@ const StockSybmolRegex = z.coerce.string().trim().regex(/^[A-Z.]{1,6}$/)
  * Represents a stock quote with various financial data attributes.
  * Extends the DataContainer class to include schema validation.
  */
-class StockQuote extends DataContainer {
+class StockQuote {
 	/**
 	 * The stock symbol (e.g., "AAPL" for Apple Inc.).
 	 * Must be 1-6 uppercase letters or a dot.
@@ -99,7 +98,7 @@ class StockQuote extends DataContainer {
 		"close": z.coerce.number().gte(0).nullable().optional(),
 		"high": z.coerce.number().gte(0).nullable().optional(),
 		"latestPrice": z.coerce.number().gte(0).nullable().optional(),
-		"latestTime": z.union([z.date(), z.iso.datetime(), z.iso.date(), z.coerce.string().refine(value => (value == null || !Number.isNaN(Date.parse(value))))]).nullable().optional(),
+		"latestTime": z.union([z.date(), z.iso.datetime(), z.iso.date(), z.coerce.string().trim().refine(value => (value == null || !Number.isNaN(Date.parse(value))))]).nullable().optional(),
 		"latestVolume": z.coerce.number().gte(0).nullable().optional(),
 		"low": z.coerce.number().gte(0).nullable().optional(),
 		"open": z.coerce.number().gte(0).nullable().optional(),
@@ -112,8 +111,7 @@ class StockQuote extends DataContainer {
 	 * @param {Object} properties - The properties to initialize the stock quote with.
 	 */
 	constructor (properties) {
-		super(properties, true);
-		Object.assign(this, properties)
+		Object.assign(this, this._schema.parse(properties))
 	}
 }
 
